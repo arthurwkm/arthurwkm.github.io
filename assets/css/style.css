@@ -387,7 +387,20 @@ main {
   position: absolute;
   top: -15px;
   right: -15px;
-  border-radius: 0 15px;
+  border-radius: 0;
+  font-size: 13px;
+  color: var(--orange-yellow-crayola);
+  background: var(--border-gradient-onyx);
+  padding: 10px;
+  box-shadow: var(--shadow-2);
+  transition: var(--transition-1);
+  z-index: 1;
+}
+
+.download-btn {
+  position: absolute;
+  top: -15px;
+  right: 14px;
   font-size: 13px;
   color: var(--orange-yellow-crayola);
   background: var(--border-gradient-onyx);
@@ -398,6 +411,16 @@ main {
 }
 
 .info_more-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: var(--bg-gradient-jet);
+  transition: var(--transition-1);
+  z-index: -1;
+}
+
+.download-btn::before {
   content: "";
   position: absolute;
   inset: 1px;
@@ -418,6 +441,20 @@ main {
 }
 
 .info_more-btn span {
+  display: none;
+}
+
+.download-btn:hover,
+.download-btn:focus {
+  background: var(--bg-gradient-yellow-1);
+}
+
+.download-btn:hover::before,
+.download-btn:focus::before {
+  background: var(--bg-gradient-yellow-2);
+}
+
+.download-btn span {
   display: none;
 }
 
@@ -544,9 +581,10 @@ main {
 
 .about-text {
   color: var(--light-gray);
-  font-size: var(--fs-6);
+  font-size: var(--fs-7);
   font-weight: var(--fw-300);
   line-height: 1.6;
+  margin: 10px;
 }
 
 .about-text p {
@@ -852,10 +890,6 @@ main {
   margin-bottom: 20px;
 }
 
-.skills-list {
-  padding: 20px;
-}
-
 
 .skills-item:not(:last-child) {
   margin-bottom: 15px;
@@ -888,6 +922,50 @@ main {
 }
 
 
+.skill-card {
+  background: var(--text-gradient-yellow);
+  border-radius: 30px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+  padding: 1rem;
+  /* Add padding to the skill cards */
+  margin: 0.5rem;
+  /* Add margin to create spacing between cards */
+  display: inline-block;
+  /* Make the skill cards inline-block */
+  vertical-align: top;
+  /* Align cards to the top */
+  /* Distribute cards in 3 columns with spacing */
+  box-sizing: border-box;
+  /* Include padding and margin in the width calculation */
+  text-align: center;
+  /* Center-align the text within cards */
+}
+
+.skill-card-body {
+  text-align: center;
+  /* Center-align the content within the skill-card-body */
+}
+
+.skills-list {
+  text-align: center;
+  /* Center-align the content within the skills-list */
+}
+
+.skill-card-title {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.flow-root {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
 
 
 
@@ -1350,6 +1428,21 @@ textarea.form-input::-webkit-resizer {
   }
 
   .info_more-btn ion-icon {
+    display: none;
+  }
+
+  .download-btn {
+    top: -30px;
+    right: 90px;
+    padding: 10px 15px;
+  }
+
+  .download-btn span {
+    display: block;
+    font-size: var(--fs-8);
+  }
+
+  .download-btn ion-icon {
     display: none;
   }
 
