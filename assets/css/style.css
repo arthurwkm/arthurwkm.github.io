@@ -162,7 +162,7 @@ html {
 }
 
 body {
-  background: var(--white-2);
+  background: var(--smoky-black);
 }
 
 
@@ -1129,7 +1129,8 @@ main {
 }
 
 .project-title,
-.project-category {
+.project-category,
+.project-text {
   margin-left: 10px;
 }
 
@@ -1146,6 +1147,14 @@ main {
   font-size: var(--fs-6);
   font-weight: var(--fw-300);
 }
+
+.project-text {
+  color: var(--light-gray-70);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-300);
+}
+
+
 
 
 
