@@ -1,0 +1,382 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-5 fw-bold">🔮 EEG Mental State Prediction</h1>
+    <p class="lead text-muted">Enter EEG electrode values to predict mental state</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">🧠 EEG Input Interface</h4>
+            </div>
+            <div class="card-body">
+                <div class="prediction-form">
+                    <form id="predictionForm">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5>Electrode Values (μV)</h5>
+                                <p class="text-muted small">
+                                    Enter the EEG values for each of the 14 electrodes. 
+                                    Values typically range from -200 to +200 microvolts.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Frontal Electrodes -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary">Frontal Region</h6>
+                                <div class="electrode-input">
+                                    <label for="AF3" class="form-label">AF3 (Frontal)</label>
+                                    <input type="number" class="form-control" id="AF3" step="0.1" value="4200.1" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="F7" class="form-label">F7 (Left Frontal)</label>
+                                    <input type="number" class="form-control" id="F7" step="0.1" value="4100.5" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="F3" class="form-label">F3 (Left Frontal)</label>
+                                    <input type="number" class="form-control" id="F3" step="0.1" value="4150.2" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="FC5" class="form-label">FC5 (Frontal-Central)</label>
+                                    <input type="number" class="form-control" id="FC5" step="0.1" value="4080.8" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="F4" class="form-label">F4 (Right Frontal)</label>
+                                    <input type="number" class="form-control" id="F4" step="0.1" value="4120.3" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="F8" class="form-label">F8 (Right Frontal)</label>
+                                    <input type="number" class="form-control" id="F8" step="0.1" value="4090.7" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="AF4" class="form-label">AF4 (Frontal)</label>
+                                    <input type="number" class="form-control" id="AF4" step="0.1" value="4160.9" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Temporal and Occipital Electrodes -->
+                            <div class="col-md-6">
+                                <h6 class="text-success">Temporal & Occipital Region</h6>
+                                <div class="electrode-input">
+                                    <label for="T7" class="form-label">T7 (Left Temporal)</label>
+                                    <input type="number" class="form-control" id="T7" step="0.1" value="4070.4" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="P7" class="form-label">P7 (Left Parietal)</label>
+                                    <input type="number" class="form-control" id="P7" step="0.1" value="4110.6" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="O1" class="form-label">O1 (Left Occipital)</label>
+                                    <input type="number" class="form-control" id="O1" step="0.1" value="4140.1" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="O2" class="form-label">O2 (Right Occipital)</label>
+                                    <input type="number" class="form-control" id="O2" step="0.1" value="4130.8" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="P8" class="form-label">P8 (Right Parietal)</label>
+                                    <input type="number" class="form-control" id="P8" step="0.1" value="4095.2" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="T8" class="form-label">T8 (Right Temporal)</label>
+                                    <input type="number" class="form-control" id="T8" step="0.1" value="4075.5" required>
+                                </div>
+                                <div class="electrode-input">
+                                    <label for="FC6" class="form-label">FC6 (Frontal-Central)</label>
+                                    <input type="number" class="form-control" id="FC6" step="0.1" value="4085.3" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <button type="button" class="btn btn-success btn-lg me-3" onclick="makePrediction()">
+                                    🔮 Predict Mental State
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="generateRandomValues()">
+                                    🎲 Generate Random Values
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Results Panel -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">📊 Prediction Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="loadingDiv" style="display: none;" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Processing...</span>
+                    </div>
+                    <p class="mt-2">Analyzing EEG signals...</p>
+                </div>
+                
+                <div id="resultsDiv" style="display: none;">
+                    <div class="result-section">
+                        <h5 class="text-center mb-3">🧠 Mental State</h5>
+                        <div class="text-center">
+                            <div id="stateResult" class="display-6 fw-bold mb-2"></div>
+                            <div id="confidenceResult" class="text-muted"></div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6>📈 Probability Breakdown</h6>
+                    <div class="mb-2">
+                        <small class="text-muted">Eyes Open (Alert)</small>
+                        <div class="progress">
+                            <div id="eyesOpenBar" class="progress-bar bg-info" style="width: 0%"></div>
+                        </div>
+                        <small id="eyesOpenPercent">0%</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted">Eyes Closed (Relaxed)</small>
+                        <div class="progress">
+                            <div id="eyesClosedBar" class="progress-bar bg-warning" style="width: 0%"></div>
+                        </div>
+                        <small id="eyesClosedPercent">0%</small>
+                    </div>
+                    
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <small class="text-muted">
+                            <strong>Interpretation:</strong>
+                            <span id="interpretation"></span>
+                        </small>
+                    </div>
+                </div>
+                
+                <div id="placeholderDiv">
+                    <div class="text-center text-muted">
+                        <div style="font-size: 4rem;">🧠</div>
+                        <p>Enter EEG values and click "Predict Mental State" to see results.</p>
+                        
+                        <hr>
+                        
+                        <h6>About the Model</h6>
+                        <ul class="text-start small">
+                            <li>Random Forest algorithm</li>
+                            <li>98.86% accuracy</li>
+                            <li>56 engineered features</li>
+                            <li>Real-time prediction</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Examples -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0">💡 Quick Examples</h6>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-outline-primary btn-sm w-100 mb-2" onclick="loadExample('alert')">
+                    👀 Load Alert State Example
+                </button>
+                <button class="btn btn-outline-warning btn-sm w-100" onclick="loadExample('relaxed')">
+                    😴 Load Relaxed State Example
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">ℹ️ How It Works</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6>🔬 Signal Processing</h6>
+                        <p class="small">
+                            Raw EEG signals are filtered using a bandpass filter (0.5-50 Hz) 
+                            to remove noise and artifacts, then normalized using z-score standardization.
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>🧮 Feature Engineering</h6>
+                        <p class="small">
+                            Statistical features (mean, std, max, min) are extracted from rolling 
+                            windows to capture temporal dynamics, expanding 14 electrodes to 56 features.
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>🤖 Classification</h6>
+                        <p class="small">
+                            A trained Random Forest model processes the engineered features to 
+                            predict eye state, which serves as a proxy for mental alertness.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function makePrediction() {
+    // Show loading
+    document.getElementById('loadingDiv').style.display = 'block';
+    document.getElementById('resultsDiv').style.display = 'none';
+    document.getElementById('placeholderDiv').style.display = 'none';
+    
+    // Collect EEG values
+    const electrodes = ['AF3', 'F7', 'F3', 'FC5', 'T7', 'P7', 'O1', 'O2', 'P8', 'T8', 'FC6', 'F4', 'F8', 'AF4'];
+    const eegValues = electrodes.map(electrode => 
+        parseFloat(document.getElementById(electrode).value)
+    );
+    
+    // Validate inputs
+    if (eegValues.some(isNaN)) {
+        alert('Please enter valid numbers for all electrodes.');
+        document.getElementById('loadingDiv').style.display = 'none';
+        document.getElementById('placeholderDiv').style.display = 'block';
+        return;
+    }
+    
+    // Make API call
+    fetch('{% url "dashboard:predict" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            eeg_values: eegValues
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('loadingDiv').style.display = 'none';
+        
+        if (data.error) {
+            alert('Error: ' + data.error);
+            document.getElementById('placeholderDiv').style.display = 'block';
+            return;
+        }
+        
+        // Display results
+        displayResults(data);
+    })
+    .catch(error => {
+        document.getElementById('loadingDiv').style.display = 'none';
+        document.getElementById('placeholderDiv').style.display = 'block';
+        alert('Error making prediction: ' + error);
+    });
+}
+
+function displayResults(data) {
+    document.getElementById('resultsDiv').style.display = 'block';
+    
+    // State result
+    const stateElement = document.getElementById('stateResult');
+    const confidenceElement = document.getElementById('confidenceResult');
+    
+    if (data.prediction === 1) {
+        stateElement.textContent = '😴 Relaxed';
+        stateElement.className = 'display-6 fw-bold mb-2 text-warning';
+    } else {
+        stateElement.textContent = '👀 Alert';
+        stateElement.className = 'display-6 fw-bold mb-2 text-success';
+    }
+    
+    confidenceElement.textContent = `Confidence: ${(data.confidence * 100).toFixed(1)}%`;
+    
+    // Probability bars
+    const eyesOpenPercent = (data.probabilities.eyes_open * 100).toFixed(1);
+    const eyesClosedPercent = (data.probabilities.eyes_closed * 100).toFixed(1);
+    
+    document.getElementById('eyesOpenBar').style.width = eyesOpenPercent + '%';
+    document.getElementById('eyesClosedBar').style.width = eyesClosedPercent + '%';
+    document.getElementById('eyesOpenPercent').textContent = eyesOpenPercent + '%';
+    document.getElementById('eyesClosedPercent').textContent = eyesClosedPercent + '%';
+    
+    // Interpretation
+    const interpretation = document.getElementById('interpretation');
+    if (data.prediction === 1) {
+        interpretation.textContent = 'The subject appears to be in a relaxed state with eyes likely closed. This indicates reduced visual attention and possibly a meditative or resting state.';
+    } else {
+        interpretation.textContent = 'The subject appears to be in an alert state with eyes likely open. This indicates active visual attention and cognitive engagement.';
+    }
+}
+
+function generateRandomValues() {
+    const electrodes = ['AF3', 'F7', 'F3', 'FC5', 'T7', 'P7', 'O1', 'O2', 'P8', 'T8', 'FC6', 'F4', 'F8', 'AF4'];
+    
+    electrodes.forEach(electrode => {
+        // Generate values in typical EEG range (around 4000-4200)
+        const value = 4000 + Math.random() * 200;
+        document.getElementById(electrode).value = value.toFixed(1);
+    });
+}
+
+function loadExample(type) {
+    const electrodes = ['AF3', 'F7', 'F3', 'FC5', 'T7', 'P7', 'O1', 'O2', 'P8', 'T8', 'FC6', 'F4', 'F8', 'AF4'];
+    
+    if (type === 'alert') {
+        // Alert state: Higher beta activity (13-30Hz), lower alpha in occipital
+        // Occipital electrodes (O1, O2) show reduced alpha when eyes are open
+        const alertValues = [
+            4250.5,  // AF3 - slightly higher frontal activity
+            4180.2,  // F7 - increased left frontal 
+            4195.8,  // F3 - active frontal thinking
+            4160.4,  // FC5 - motor readiness
+            4140.1,  // T7 - temporal activation
+            4175.6,  // P7 - parietal attention
+            4080.3,  // O1 - LOW occipital (eyes open, less alpha)
+            4085.7,  // O2 - LOW occipital (eyes open, less alpha) 
+            4170.9,  // P8 - right parietal
+            4145.2,  // T8 - right temporal
+            4165.8,  // FC6 - right motor
+            4200.1,  // F4 - right frontal activation
+            4185.4,  // F8 - right frontal
+            4260.3   // AF4 - high frontal attention
+        ];
+        electrodes.forEach((electrode, index) => {
+            document.getElementById(electrode).value = alertValues[index];
+        });
+    } else {
+        // Relaxed state: Higher alpha activity (8-13Hz), especially in occipital
+        // Occipital electrodes (O1, O2) show strong alpha when eyes are closed
+        const relaxedValues = [
+            4120.1,  // AF3 - reduced frontal activity
+            4090.5,  // F7 - lower left frontal
+            4105.2,  // F3 - relaxed frontal 
+            4085.8,  // FC5 - reduced motor
+            4075.4,  // T7 - quiet temporal
+            4095.6,  // P7 - relaxed parietal
+            4280.1,  // O1 - HIGH occipital (eyes closed, strong alpha)
+            4275.8,  // O2 - HIGH occipital (eyes closed, strong alpha)
+            4100.2,  // P8 - quiet right parietal
+            4080.5,  // T8 - quiet temporal
+            4090.3,  // FC6 - reduced right motor
+            4110.7,  // F4 - lower right frontal
+            4095.4,  // F8 - quiet right frontal
+            4125.9   // AF4 - reduced frontal attention
+        ];
+        electrodes.forEach((electrode, index) => {
+            document.getElementById(electrode).value = relaxedValues[index];
+        });
+    }
+}
+</script>
+{% endblock %}

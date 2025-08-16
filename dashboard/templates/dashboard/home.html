@@ -1,0 +1,147 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <div class="brain-icon">🧠</div>
+    <h1 class="display-4 fw-bold mb-3">EEG Mental State Classifier</h1>
+    <p class="lead text-muted">Advanced machine learning for brain-computer interfaces</p>
+</div>
+
+<!-- Project Statistics -->
+<div class="row mb-5">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.total_samples|floatformat:0 }}</div>
+            <div class="stat-label">Total Samples</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(45deg, #fa709a, #fee140);">
+            <div class="stat-number">{{ stats.electrodes }}</div>
+            <div class="stat-label">EEG Electrodes</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(45deg, #a8edea, #fed6e3);">
+            <div class="stat-number">{{ stats.engineered_features }}</div>
+            <div class="stat-label">Engineered Features</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(45deg, #d299c2, #fef9d7);">
+            <div class="stat-number">98.86%</div>
+            <div class="stat-label">Best Accuracy</div>
+        </div>
+    </div>
+</div>
+
+<!-- Project Overview -->
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title">🎯 Project Overview</h3>
+                <p class="card-text">
+                    This project implements a state-of-the-art machine learning system for classifying mental states 
+                    using EEG (electroencephalogram) signals. By analyzing brainwave patterns from 14 electrodes, 
+                    our Random Forest model can predict eye state (open/closed) as a proxy for mental alertness with 
+                    remarkable 98.86% accuracy.
+                </p>
+                
+                <h5 class="mt-4">🔬 Key Features:</h5>
+                <ul class="list-unstyled">
+                    <li>✨ Advanced signal preprocessing with bandpass filtering</li>
+                    <li>🧮 Feature engineering with temporal statistics</li>
+                    <li>🤖 Multiple ML algorithms comparison</li>
+                    <li>📊 Real-time prediction capabilities</li>
+                    <li>📈 Comprehensive performance visualization</li>
+                </ul>
+                
+                <div class="mt-4">
+                    <a href="{% url 'dashboard:results' %}" class="btn btn-primary me-2">View Results</a>
+                    <a href="{% url 'dashboard:predict' %}" class="btn btn-outline-primary">Try Prediction</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title">📊 Dataset Summary</h3>
+                
+                <div class="mb-3">
+                    <small class="text-muted">Eyes Open (Alert)</small>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: 55%"></div>
+                    </div>
+                    <small>{{ stats.eyes_open|floatformat:0 }} samples (55.1%)</small>
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted">Eyes Closed (Relaxed)</small>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" style="width: 45%"></div>
+                    </div>
+                    <small>{{ stats.eyes_closed|floatformat:0 }} samples (44.9%)</small>
+                </div>
+                
+                <hr>
+                
+                <h5>🧠 EEG Electrodes</h5>
+                <p class="small text-muted">
+                    AF3, F7, F3, FC5, T7, P7, O1, O2, P8, T8, FC6, F4, F8, AF4
+                </p>
+                
+                <h5>🎯 Applications</h5>
+                <ul class="small">
+                    <li>Brain-computer interfaces</li>
+                    <li>Driver alertness monitoring</li>
+                    <li>Meditation tracking</li>
+                    <li>Clinical assessment</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4>🚀 Quick Actions</h4>
+                <p class="text-muted mb-4">Explore different aspects of the EEG mental state classification system</p>
+                
+                <div class="row">
+                    <div class="col-md-2">
+                        <a href="{% url 'dashboard:results' %}" class="btn btn-outline-primary w-100 mb-2">
+                            📈 Model Performance
+                        </a>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="{% url 'dashboard:visualizations' %}" class="btn btn-outline-info w-100 mb-2">
+                            📊 Data Visualizations
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'dashboard:predict' %}" class="btn btn-outline-success w-100 mb-2">
+                            🔮 Make Prediction
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'dashboard:learn' %}" class="btn btn-outline-danger w-100 mb-2">
+                            📚 Learn ML & BCI
+                        </a>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="{% url 'dashboard:about' %}" class="btn btn-outline-warning w-100 mb-2">
+                            ℹ️ About Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
