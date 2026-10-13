@@ -106,7 +106,10 @@ function drawBall() {
     const edge = !inside(x + 1, y) || !inside(x - 1, y) || !inside(x, y + 1) || !inside(x, y - 1);
     const seam = edge || Math.abs(u) < 0.6 || Math.abs(v) < 0.6
       || Math.abs(Math.hypot(u - 1.55 * r, v) - 1.05 * r) < 0.6 || Math.abs(Math.hypot(u + 1.55 * r, v) - 1.05 * r) < 0.6;
-    g.px(cx + x, cy + y, seam ? WHITE : BG);
+    // fixed lighting (it does not spin with the ball): dithered shadow bottom-right, glint top-left
+    const shade = !seam && x + y > r * 0.25 && ((x + y) & 1) === 0;
+    const glint = !seam && Math.hypot(x + r * 0.45, y + r * 0.45) < 1.3;
+    g.px(cx + x, cy + y, seam ? WHITE : glint ? alpha(0.7) : shade ? '#2b3a50' : BG);
   }
 }
 
@@ -117,22 +120,39 @@ function draw() {
   const ry = q(hoop.rimY), f = q(hoop.front), b = q(hoop.back), dep = q(hoop.depth);
   const right = g.cols - 1, floor = Math.floor((H - 1) / P);
 
-  // pole and arm
-  g.rect(right - 2, bb + 6, 2, floor - bb - 5, alpha(0.45));
-  g.line(right - 2, bb + 6, bx + bw, (bt + bb) >> 1, alpha(0.45));
-  g.line(right - 1, bb + 6, bx + bw, ((bt + bb) >> 1) + 1, alpha(0.45));
-  // backboard, seen edge-on
+  // pole: 3 px wide with a lit edge, a base plate on the floor and two struts holding the board
+  const mid = (bt + bb) >> 1;
+  g.rect(right - 3, bb + 4, 3, floor - bb - 3, alpha(0.3));
+  g.line(right - 3, bb + 4, right - 3, floor, alpha(0.6));
+  g.rect(right - 9, floor - 1, 10, 2, alpha(0.6));
+  g.line(right - 3, bb + 4, bx + bw, mid, alpha(0.5));
+  g.line(right - 3, bb + 16, bx + bw, bb - 3, alpha(0.5));
+  // backboard, seen edge-on: white slab with a darker core
   g.rect(bx, bt, bw, bb - bt, WHITE);
-  // net: strings narrowing downwards, crossed diagonally
-  const n = 6, inset = (b - f) * 0.22;
-  const top = i => f + (b - f) * i / n, bot = i => f + inset + (b - f - 2 * inset) * i / n;
-  for (let i = 0; i <= n; i++) {
-    g.line(top(i), ry + 2, bot(i), ry + dep, alpha(0.3));
-    if (i < n) g.line(top(i), ry + 2, bot(i + 1), ry + dep, alpha(0.3));
+  g.rect(bx + 1, bt + 2, Math.max(bw - 2, 1), bb - bt - 4, alpha(0.4));
+
+  // net: staggered diamond mesh that narrows towards the bottom
+  const rows = 4, cols = 6, inset = (b - f) * 0.2;
+  const pt = (r, u) => {
+    const l = f + inset * r / rows, w = (b - f) - 2 * inset * r / rows;
+    return [l + w * Math.min(Math.max(u, 0), 1), ry + 2 + (dep - 2) * r / rows];
+  };
+  for (let r = 0; r < rows; r++) for (let i = 0; i <= cols; i++) {
+    const u = (i + (r % 2) * 0.5) / cols;
+    g.line(...pt(r, u), ...pt(r + 1, u + 0.5 / cols), alpha(0.3));
+    g.line(...pt(r, u), ...pt(r + 1, u - 0.5 / cols), alpha(0.3));
   }
-  g.line(bot(0), ry + dep, bot(n), ry + dep, alpha(0.5));
-  // rim (2 px thick) and its bracket to the board
-  g.rect(f, ry, bx - f, 2, WHITE);
+  g.line(...pt(rows, 0), ...pt(rows, 1), alpha(0.45));
+
+  // rim: a thin ellipse in perspective, the far half dim and the near half bright and 2 px thick
+  const rx = (b - f) / 2, cx = f + rx;
+  for (let k = 0; k < 24; k++) {
+    const t0 = Math.PI * k / 24, t1 = Math.PI * (k + 1) / 24;
+    const x0 = cx + rx * Math.cos(t0), x1 = cx + rx * Math.cos(t1), s0 = 2 * Math.sin(t0), s1 = 2 * Math.sin(t1);
+    g.line(x0, ry - s0, x1, ry - s1, alpha(0.55));
+    g.line(x0, ry + s0, x1, ry + s1, WHITE); g.line(x0, ry + 1 + s0, x1, ry + 1 + s1, WHITE);
+  }
+  g.rect(b, ry, bx - b, 2, WHITE);                                         // bracket to the board
 
   drawBall();
 

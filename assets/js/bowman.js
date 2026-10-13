@@ -2,14 +2,14 @@
 // You are the archer on the left: press on him, drag back to draw the bow, release to shoot. The AI answers.
 import { pixelCanvas, onPointer, WHITE, alpha } from './pixel.js';
 
-const g = pixelCanvas(3);
+const g = pixelCanvas(2);
 const P = g.P;
 const RED = '#dc2626';
 const G = 900;                        // gravity, px/s²
 const MAX_PULL = 150;                 // drag distance (px) for a full-power shot
 const HEALTH = 100;
 const DAMAGE = { head: 50, body: 25 };// at a typical strong shot; scaled by arrow speed
-const AI_SPEED_ERR = 0.06, AI_ANGLE_ERR = 2.5 * Math.PI / 180;   // the AI's aim is deliberately imperfect
+const AI_SPEED_ERR = 0.075, AI_ANGLE_ERR = 3 * Math.PI / 180;   // the AI's aim is deliberately imperfect
 const GRAB = 48;
 
 let W, H, VMAX;
@@ -23,7 +23,7 @@ const rand = (a, b) => a + Math.random() * (b - a);
 function place(c, x0, x1) { c.fx = rand(x0, x1); c.fy = rand(0.38, 0.88); }
 function position(c) {
   c.x = Math.round(c.fx * W / P) * P;
-  c.y = Math.max(Math.round(c.fy * H / P) * P, 34 * P);   // feet; keeps the health bar on screen
+  c.y = Math.max(Math.round(c.fy * H / P) * P, 62 * P);   // feet; keeps the health bar and labels on screen
 }
 
 function newRound(fullReset) {
@@ -45,11 +45,11 @@ function layout() {
 }
 
 // ---------- geometry (screen px) ----------
-const shoulder = c => ({ x: c.x, y: c.y - 15 * P });
+const shoulder = c => ({ x: c.x, y: c.y - 27 * P });
 const dir = c => ({ x: Math.cos(c.aim) * c.side, y: -Math.sin(c.aim) });
-const launchPoint = c => { const s = shoulder(c), d = dir(c); return { x: s.x + d.x * 8 * P, y: s.y + d.y * 8 * P }; };
-const head = c => ({ x: c.x, y: c.y - 22 * P, r: 4 * P });
-const body = c => ({ x0: c.x - 3 * P, x1: c.x + 3 * P, y0: c.y - 19 * P, y1: c.y });
+const launchPoint = c => { const s = shoulder(c), d = dir(c); return { x: s.x + d.x * 14 * P, y: s.y + d.y * 14 * P }; };
+const head = c => ({ x: c.x, y: c.y - 37 * P, r: 5 * P });
+const body = c => ({ x0: c.x - 4 * P, x1: c.x + 4 * P, y0: c.y - 32 * P, y1: c.y });
 
 // ---------- shooting ----------
 function fire(c, speed) {
@@ -61,7 +61,7 @@ function fire(c, speed) {
 
 function aiAim() {
   const from = launchPoint({ ...ai, aim: Math.PI / 4 });
-  const dx = Math.abs(me.x - from.x), up = from.y - (me.y - 12 * P);
+  const dx = Math.abs(me.x - from.x), up = from.y - (me.y - 18 * P);
   let theta = rand(25, 60) * Math.PI / 180, v2;
   for (let i = 0; i < 20; i++) {                   // find an angle with a reachable solution
     const den = 2 * Math.cos(theta) ** 2 * (dx * Math.tan(theta) - up);
@@ -78,11 +78,12 @@ function hit(c, part, speed, x, y) {
   const mult = Math.min(Math.max(speed / (0.75 * VMAX), 0.3), 1.4);
   const dmg = Math.round(DAMAGE[part] * mult);
   c.hp = Math.max(0, c.hp - dmg);
-  popups.push({ text: part === 'head' ? `HEADSHOT -${dmg}` : `-${dmg}`, x, y: y - 12 * P, t: 0, color: part === 'head' ? RED : WHITE });
+  popups.push({ text: part === 'head' ? `HEADSHOT -${dmg}` : `-${dmg}`, x, y: y - 16 * P, t: 0, color: part === 'head' ? RED : WHITE });
   const a = Math.atan2(arrow.vy, arrow.vx);
   for (let i = 0; i < 26; i++) {                   // spurt of blood, mostly along the arrow's direction
     const s = rand(60, 260), da = rand(-0.9, 0.9) + (Math.random() < 0.35 ? Math.PI : 0);
-    blood.push({ x, y, vx: Math.cos(a + da) * s, vy: Math.sin(a + da) * s - rand(40, 140), t: 0 });
+    blood.push({ x, y, vx: Math.cos(a + da) * s, vy: Math.sin(a + da) * s - rand(40, 140), t: 0,
+      size: Math.random() < 0.3 ? 2 : 1, color: Math.random() < 0.4 ? '#991b1b' : RED });
   }
   stuck.push({ c, ox: x - c.x, oy: y - c.y, a });
   if (c.hp === 0) c.dead = 1;
@@ -128,14 +129,18 @@ function update(dt) {
 // ---------- drawing (art pixels) ----------
 const q = v => Math.round(v / P);
 
-function drawArrow(x, y, a, len = 12, c = WHITE) {
-  const dx = Math.cos(a), dy = Math.sin(a);
-  g.line(x, y, x - dx * len, y - dy * len, c);
-  g.line(x, y, x - dx * 2 - dy * 2, y - dy * 2 + dx * 2, c);            // head
-  g.line(x, y, x - dx * 2 + dy * 2, y - dy * 2 - dx * 2, c);
-  const tx = x - dx * len, ty = y - dy * len;                           // fletching
-  g.line(tx, ty, tx - dx * 2 - dy * 2, ty - dy * 2 + dx * 2, alpha(0.6));
-  g.line(tx, ty, tx - dx * 2 + dy * 2, ty - dy * 2 - dx * 2, alpha(0.6));
+function drawArrow(x, y, a, len = 18, c = WHITE) {
+  const dx = Math.cos(a), dy = Math.sin(a), nx = -dy, ny = dx;
+  const tx = x - dx * len, ty = y - dy * len;
+  g.line(x - dx * 2, y - dy * 2, tx, ty, c);                                // shaft
+  g.line(x, y, x - dx * 4 + nx * 2, y - dy * 4 + ny * 2, c);                // arrowhead
+  g.line(x, y, x - dx * 4 - nx * 2, y - dy * 4 - ny * 2, c);
+  g.line(x - dx * 4 + nx * 2, y - dy * 4 + ny * 2, x - dx * 4 - nx * 2, y - dy * 4 - ny * 2, c);
+  for (const k of [0, 2]) {                                                 // two feathers each side
+    const fx = tx + dx * k, fy = ty + dy * k;
+    g.line(fx, fy, fx - dx * 3 + nx * 2, fy - dy * 3 + ny * 2, alpha(0.6));
+    g.line(fx, fy, fx - dx * 3 - nx * 2, fy - dy * 3 - ny * 2, alpha(0.6));
+  }
 }
 
 function drawArcher(c, holdingArrow) {
@@ -144,45 +149,69 @@ function drawArcher(c, holdingArrow) {
   const rot = c.fall * (Math.PI / 2) * -s, cr = Math.cos(rot), sr = Math.sin(rot);
   const T = (x, y) => [fx + x * cr - y * sr, fy + x * sr + y * cr];
   const L = (a, b, col = WHITE) => g.line(...T(...a), ...T(...b), col);
+  const X = x => x * s;                                                     // mirror for the archer on the right
 
-  g.line(fx - 9, fy + 1, fx + 9, fy + 1, alpha(0.35), 1);               // ledge
-  const [hx, hy] = T(0, -22);
-  g.circle(hx, hy, 3, WHITE, '#0b1220');
-  L([0, -19], [0, -9]);                                                  // body
-  L([0, -9], [-3, 0]); L([0, -9], [3, 0]);                               // legs
+  // ledge: a short stone slab with a lighter top edge
+  g.line(fx - 13, fy + 1, fx + 13, fy + 1, alpha(0.6));
+  g.line(fx - 12, fy + 2, fx + 12, fy + 2, alpha(0.25), 1);
 
+  // legs with feet, slightly apart in a firing stance
+  L([0, -14], [X(-5), -1]); L([X(-5), -1], [X(-7), 0]);
+  L([0, -14], [X(4), -1]); L([X(4), -1], [X(7), 0]);
+  // torso, 2 px wide, and a belt
+  L([0, -32], [0, -14]); L([X(-1), -29], [X(-1), -14]);
+  L([X(-3), -15], [X(2), -15], alpha(0.6));
+  // quiver on the back with three fletchings sticking out
+  L([X(-3), -28], [X(-6), -18], alpha(0.7)); L([X(-4), -28], [X(-7), -18], alpha(0.7));
+  for (const k of [0, 1, 2]) L([X(-3 + k), -29 - k], [X(-2 + k), -32 - k], alpha(0.6));
+  // head: outlined circle, an eye looking at the enemy, and a headband with a tail fluttering behind
+  const [hx, hy] = T(0, -37);
+  g.circle(hx, hy, 4, WHITE, '#0b1220');
+  g.px(...T(X(2), -38), WHITE);
+  L([X(-4), -39], [X(4), -39]);
+  L([X(-4), -39], [X(-8), -37], alpha(0.7)); L([X(-4), -38], [X(-7), -35], alpha(0.5));
+
+  // bow: a curved limb through the bow hand, string to the nock point
   const d = [Math.cos(c.aim) * s, -Math.sin(c.aim)], n = [-d[1], d[0]];
-  const S = [0, -15], Hd = [S[0] + d[0] * 7, S[1] + d[1] * 7];
-  const T1 = [Hd[0] + n[0] * 6 - d[0] * 2, Hd[1] + n[1] * 6 - d[1] * 2];
-  const T2 = [Hd[0] - n[0] * 6 - d[0] * 2, Hd[1] - n[1] * 6 - d[1] * 2];
-  const N = [Hd[0] - d[0] * (3 + c.pull * 8), Hd[1] - d[1] * (3 + c.pull * 8)];
-  L(S, Hd);                                                              // bow arm
-  L(T1, Hd); L(Hd, T2);                                                  // bow limbs
+  const S = [0, -27], Hd = [S[0] + d[0] * 12, S[1] + d[1] * 12];
+  const bowPt = t => [Hd[0] + n[0] * 10 * t - d[0] * 4 * t * t, Hd[1] + n[1] * 10 * t - d[1] * 4 * t * t];
+  const N = [Hd[0] - d[0] * (4 + c.pull * 12), Hd[1] - d[1] * (4 + c.pull * 12)];
+  L(S, [S[0] + d[0] * 5 + n[0], S[1] + d[1] * 5 + n[1]]); L([S[0] + d[0] * 5 + n[0], S[1] + d[1] * 5 + n[1]], Hd);   // bow arm
+  for (let i = -6; i < 6; i++) L(bowPt(i / 6), bowPt((i + 1) / 6));
+  L(bowPt(-1), [bowPt(-1)[0] - d[0], bowPt(-1)[1] - d[1]]); L(bowPt(1), [bowPt(1)[0] - d[0], bowPt(1)[1] - d[1]]);   // tips
   if (c.dead) return;
-  L(T1, N, alpha(0.7)); L(N, T2, alpha(0.7));                            // string
-  L(S, N);                                                               // drawing arm
+  L(bowPt(-1), N, alpha(0.6)); L(N, bowPt(1), alpha(0.6));                  // string
+  const elbow = [S[0] - d[0] * 4 - n[0] * 3, S[1] - d[1] * 4 - n[1] * 3];
+  L(S, elbow); L(elbow, N);                                                 // drawing arm
   if (holdingArrow) {
-    const [nx, ny] = T(...N), [tx, ty] = T(N[0] + d[0] * 13, N[1] + d[1] * 13);
-    drawArrow(tx, ty, Math.atan2(ty - ny, tx - nx), 13);
+    const [nx, ny] = T(...N), [tx, ty] = T(N[0] + d[0] * 19, N[1] + d[1] * 19);
+    drawArrow(tx, ty, Math.atan2(ty - ny, tx - nx), 19);
   }
 
-  // health bar
-  const bx = fx - 10, by = fy - 31;
-  g.rect(bx, by, 21, 4, alpha(0.35));
-  g.rect(bx + 1, by + 1, Math.round(19 * c.hp / HEALTH), 2, c.hp > 30 ? WHITE : RED);
+  // health bar: framed, with the fill in white (red when low)
+  const bx = fx - 14, by = fy - 50;
+  g.line(bx, by, bx + 28, by, alpha(0.5)); g.line(bx, by + 4, bx + 28, by + 4, alpha(0.5));
+  g.line(bx, by, bx, by + 4, alpha(0.5)); g.line(bx + 28, by, bx + 28, by + 4, alpha(0.5));
+  g.rect(bx + 1, by + 1, Math.round(27 * c.hp / HEALTH), 3, c.hp > 30 ? WHITE : RED);
 }
 
 function drawGuide() {
   const p = launchPoint(me), d = dir(me);
-  const len = 8 + me.pull * 50;
+  const len = 10 + me.pull * 70;
   g.line(q(p.x), q(p.y), q(p.x) + d.x * len, q(p.y) + d.y * len, alpha(0.8), 2);
-  const deg = Math.round(me.aim * 180 / Math.PI);
-  g.text(`${deg}° ${Math.round(me.pull * 100)}%`, q(me.x), q(me.y) - 40, WHITE, 1, 'center');
+  // small arc from the horizontal to the aim line, like a protractor
+  const cx = q(p.x), cy = q(p.y);
+  for (let k = 0; k <= 16; k++) {
+    const t = me.aim * k / 16;
+    if (k % 2 === 0) g.px(cx + Math.cos(t) * 9, cy - Math.sin(t) * 9, alpha(0.5));
+  }
+  const deg = (me.aim * 180 / Math.PI).toFixed(2);
+  g.text(`${deg}° ${Math.round(me.pull * 100)}%`, q(me.x), q(me.y) - 62, WHITE, 2, 'center');
 }
 
 function button() {
-  const w = 120 * P, h = 26 * P;
-  return { x: W / 2 - w / 2, y: H / 2 - h / 2 + 20 * P, w, h };
+  const w = 360, h = 78;
+  return { x: W / 2 - w / 2, y: H / 2 - h / 2 + 50, w, h };
 }
 
 function draw() {
@@ -191,27 +220,27 @@ function draw() {
     if (s.c) {
       const c = s.c, rot = c.fall * (Math.PI / 2) * -c.side, cr = Math.cos(rot), sr = Math.sin(rot);
       const x = c.x + s.ox * cr - s.oy * sr, y = c.y + s.ox * sr + s.oy * cr;
-      drawArrow(q(x), q(y), s.a + rot, 10);
-    } else drawArrow(q(s.ox), q(s.oy), s.a, 10, alpha(0.7));
+      drawArrow(q(x), q(y), s.a + rot, 15);
+    } else drawArrow(q(s.ox), q(s.oy), s.a, 15, alpha(0.7));
   }
   drawArcher(me, state === 'player' || state === 'aiming');
   drawArcher(ai, state === 'ai');
   if (arrow) drawArrow(q(arrow.x), q(arrow.y), Math.atan2(arrow.vy, arrow.vx));
   if (state === 'aiming') drawGuide();
-  if (state === 'player') g.text('YOUR TURN', q(me.x), q(me.y) - 40, alpha(0.75), 1, 'center');
+  if (state === 'player') g.text('YOUR TURN', q(me.x), q(me.y) - 62, alpha(0.75), 2, 'center');
 
-  for (const b of blood) g.px(q(b.x), q(b.y), RED);
+  for (const b of blood) g.rect(q(b.x), q(b.y), b.size, b.size, b.color);
   for (const p of popups) {
     const a = Math.max(0, 1 - p.t / 1.3);
-    g.text(p.text, q(p.x), q(p.y) - Math.round(p.t * 12), p.color === RED ? `rgba(220, 38, 38, ${a.toFixed(2)})` : alpha(a.toFixed(2)), 1, 'center');
+    g.text(p.text, q(p.x), q(p.y) - Math.round(p.t * 12), p.color === RED ? `rgba(220, 38, 38, ${a.toFixed(2)})` : alpha(a.toFixed(2)), 2, 'center');
   }
-  if (msg && (state === 'won' || state === 'lost')) g.text(msg, g.cols / 2, g.rows / 2 - 14, WHITE, 3, 'center');
+  if (msg && (state === 'won' || state === 'lost')) g.text(msg, g.cols / 2, g.rows / 2 - 24, WHITE, 4, 'center');
   if (state === 'lost') {
     const b = button();
     g.rect(q(b.x), q(b.y), q(b.w), q(b.h), '#0b1220');
     g.line(q(b.x), q(b.y), q(b.x + b.w), q(b.y), WHITE); g.line(q(b.x), q(b.y + b.h), q(b.x + b.w), q(b.y + b.h), WHITE);
     g.line(q(b.x), q(b.y), q(b.x), q(b.y + b.h), WHITE); g.line(q(b.x + b.w), q(b.y), q(b.x + b.w), q(b.y + b.h), WHITE);
-    g.text('PLAY AGAIN', q(b.x + b.w / 2), q(b.y + b.h / 2) - 5, WHITE, 2, 'center');
+    g.text('PLAY AGAIN', q(b.x + b.w / 2), q(b.y + b.h / 2) - 7, WHITE, 3, 'center');
   }
 }
 
@@ -245,7 +274,7 @@ function setAim(x, y) {
 
 onPointer({
   hit: (x, y) => state === 'lost' ? (onButton(x, y) ? 'button' : false)
-    : state === 'player' && Math.hypot(x - me.x, y - (me.y - 14 * P)) <= GRAB,
+    : state === 'player' && Math.hypot(x - me.x, y - (me.y - 19 * P)) <= GRAB,
   down(x, y) {
     if (state === 'lost') return newRound(true);
     state = 'aiming'; aim = null;
