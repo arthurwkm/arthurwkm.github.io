@@ -214,6 +214,11 @@
   </div>
 
   <script src="./assets/js/site.js" defer></script>
-  <script src="./assets/js/ball.js" defer></script>
+  <script type="module">
+    // background mini-game: basketball or bowman, picked at random on each visit (?game=ball|bowman forces one)
+    const forced = new URLSearchParams(location.search).get('game');
+    const game = ['ball', 'bowman'].includes(forced) ? forced : Math.random() < 0.5 ? 'ball' : 'bowman';
+    import(`./assets/js/${game}.js`);
+  </script>
 </body>
 </html>
