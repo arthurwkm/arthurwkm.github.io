@@ -6,13 +6,14 @@ const g = pixelCanvas(2);             // one art pixel = 2×2 screen pixels
 const P = g.P;
 const R = 22;                         // ball radius in screen px (11 art pixels)
 const PX_PER_M = (2 * R) / 0.24;
-const G = 0.3 * 9.81 * PX_PER_M;      // 30% of real gravity: slow, floaty arcs that are easy to follow and aim
+const G = 9.81 * PX_PER_M;            // real gravity
 const AIR = 0.04;                     // linear air drag per second
 const FLOOR_E = 0.82;                 // restitution of a basketball on a hard floor
 const RIM_E = 0.55, BOARD_E = 0.62, WALL_E = 0.6;
 const ROLL_DECEL = 0.3 * PX_PER_M;    // rolling resistance on the ground
 const RIM_R = 3;                      // rim tube radius
-const MAX_THROW = 8 * PX_PER_M;       // scaled with gravity so throws reach about the same heights
+const MAX_THROW = 11 * PX_PER_M;
+const THROW_GAIN = 0.5;               // the ball leaves at half the mouse speed: flicks stay gentle
 const GRAB = R + 26;                  // generous grab ring: easy to catch a moving ball
 const HOOP_SCALE = 1.4;               // hoop drawn bigger than regulation relative to the ball
 
@@ -202,7 +203,7 @@ onPointer({
   up() {
     const a = samples[0], b = samples[samples.length - 1], s = (b.t - a.t) / 1000;
     if (s > 0.008) {
-      const k = Math.min(1, MAX_THROW / (Math.hypot(b.x - a.x, b.y - a.y) / s || 1));
+      const k = Math.min(THROW_GAIN, MAX_THROW / (Math.hypot(b.x - a.x, b.y - a.y) / s || 1));
       ball.vx = (b.x - a.x) / s * k; ball.vy = (b.y - a.y) / s * k;
       ball.w = ball.vx / R;
     }
