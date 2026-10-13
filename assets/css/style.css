@@ -2012,3 +2012,134 @@ textarea.form-input::-webkit-resizer {
   }
 
 }
+
+
+
+/*-----------------------------------*\
+  #FIXES (sidebar buttons, project thumbnails, skills)
+\*-----------------------------------*/
+
+/* both sidebar buttons share one row instead of being absolutely stacked over the avatar */
+.sidebar-actions {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  display: flex;
+  gap: 6px;
+  z-index: 1;
+}
+
+.sidebar-actions .info_more-btn,
+.sidebar-actions .download-btn {
+  position: relative;
+  top: auto;
+  right: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 0 15px;
+}
+
+.sidebar.active {
+  max-height: 460px;
+}
+
+@media (min-width: 580px) {
+  .sidebar-actions {
+    top: -30px;
+    right: -30px;
+  }
+
+  .sidebar.active {
+    max-height: 640px;
+  }
+}
+
+@media (min-width: 1250px) {
+  .sidebar-actions {
+    position: static;
+    justify-content: center;
+    margin-top: 5px;
+  }
+
+  .sidebar-actions .download-btn {
+    border-radius: 12px;
+  }
+
+  .sidebar-actions .download-btn ion-icon {
+    display: block;
+  }
+}
+
+/* thumbnails are 4:3; show them whole instead of cropping to a fixed 200px height */
+.project-img {
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
+
+.project-text {
+  color: var(--light-gray);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+/* skills: grouped chips, sized to stay compact on phones */
+.skills-list {
+  padding: 20px;
+  text-align: left;
+}
+
+.skill-group:not(:last-child) {
+  margin-bottom: 18px;
+}
+
+.skill-group-title {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  margin-bottom: 8px;
+}
+
+.skill-card-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  text-align: left;
+}
+
+.skill-card {
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.skill-card-title {
+  font-size: var(--fs-7);
+}
+
+.sidebar-actions .download-btn span,
+.sidebar-actions .info_more-btn span {
+  white-space: nowrap;
+}
+
+@media (min-width: 1250px) {
+  .sidebar-actions .info_more-btn {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .filter-list {
+    flex-wrap: wrap;
+    gap: 10px 22px;
+  }
+
+  .filter-item button {
+    white-space: nowrap;
+  }
+}
+
+.project-title {
+  text-transform: none;
+}

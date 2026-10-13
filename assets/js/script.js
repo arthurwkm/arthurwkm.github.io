@@ -12,71 +12,44 @@ const sidebar = document.querySelector("[data-sidebar]");
 const sidebarBtn = document.querySelector("[data-sidebar-btn]");
 
 // sidebar toggle functionality for mobile
-sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
-
-// modal variable
-const modalImg = document.querySelector("[data-modal-img]");
-const modalTitle = document.querySelector("[data-modal-title]");
-const modalText = document.querySelector("[data-modal-text]");
+sidebarBtn.addEventListener("click", function () {
+  elementToggleFunc(sidebar);
+  this.querySelector("span").innerText = sidebar.classList.contains("active") ? "Hide Contacts" : "Show Contacts";
+});
 
 
 
-// custom select variables
+// custom select variables (mobile) and filter buttons (larger screens)
 const select = document.querySelector("[data-select]");
 const selectItems = document.querySelectorAll("[data-select-item]");
-const selectValue = document.querySelector("[data-selecct-value]");
+const selectValue = document.querySelector("[data-select-value]");
 const filterBtn = document.querySelectorAll("[data-filter-btn]");
+const filterItems = document.querySelectorAll("[data-filter-item]");
 
 select.addEventListener("click", function () { elementToggleFunc(this); });
 
-// add event in all select items
-for (let i = 0; i < selectItems.length; i++) {
-  selectItems[i].addEventListener("click", function () {
-
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
-    elementToggleFunc(select);
-    filterFunc(selectedValue);
-
-  });
-}
-
-// filter variables
-const filterItems = document.querySelectorAll("[data-filter-item]");
-
 const filterFunc = function (selectedValue) {
-
-  for (let i = 0; i < filterItems.length; i++) {
-
-    if (selectedValue === "all") {
-      filterItems[i].classList.add("active");
-    } else if (selectedValue === filterItems[i].dataset.category) {
-      filterItems[i].classList.add("active");
-    } else {
-      filterItems[i].classList.remove("active");
-    }
-
+  for (const item of filterItems) {
+    item.classList.toggle("active", selectedValue === "all" || selectedValue === item.dataset.category);
   }
-
 }
 
-// add event in all filter button items for large screen
-let lastClickedBtn = filterBtn[0];
+// keeps the mobile select and the desktop buttons showing the same category
+const applyFilter = function (label) {
+  selectValue.innerText = label;
+  filterFunc(label.toLowerCase());
+  for (const btn of filterBtn) btn.classList.toggle("active", btn.innerText === label);
+}
 
-for (let i = 0; i < filterBtn.length; i++) {
-
-  filterBtn[i].addEventListener("click", function () {
-
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
-    filterFunc(selectedValue);
-
-    lastClickedBtn.classList.remove("active");
-    this.classList.add("active");
-    lastClickedBtn = this;
-
+for (const item of selectItems) {
+  item.addEventListener("click", function () {
+    applyFilter(this.innerText);
+    elementToggleFunc(select);
   });
+}
 
+for (const btn of filterBtn) {
+  btn.addEventListener("click", function () { applyFilter(this.innerText); });
 }
 
 
@@ -85,20 +58,11 @@ for (let i = 0; i < filterBtn.length; i++) {
 const navigationLinks = document.querySelectorAll("[data-nav-link]");
 const pages = document.querySelectorAll("[data-page]");
 
-// add event to all nav link
-for (let i = 0; i < navigationLinks.length; i++) {
-  navigationLinks[i].addEventListener("click", function () {
-
-    for (let i = 0; i < pages.length; i++) {
-      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
-        pages[i].classList.add("active");
-        navigationLinks[i].classList.add("active");
-        window.scrollTo(0, 0);
-      } else {
-        pages[i].classList.remove("active");
-        navigationLinks[i].classList.remove("active");
-      }
-    }
-
+for (const link of navigationLinks) {
+  link.addEventListener("click", function () {
+    const page = this.innerText.toLowerCase();
+    for (const p of pages) p.classList.toggle("active", p.dataset.page === page);
+    for (const l of navigationLinks) l.classList.toggle("active", l === this);
+    window.scrollTo(0, 0);
   });
 }
