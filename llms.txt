@@ -1,0 +1,34 @@
+# Arthur Santos Vieira Silva — Software Engineer
+
+> Software engineer in Recife, Brazil. 4+ years at Moises building data pipelines, CRM automations, machine learning models and AI integrations with Python, TypeScript, Terraform and Google Cloud. BS in Computer Science, Federal University of Pernambuco (UFPE).
+
+Contact: arthurvieirasofteng@gmail.com · GitHub: https://github.com/arthurwkm · LinkedIn: https://www.linkedin.com/in/arthursantosvs/
+Résumé (PDF): https://arthurwkm.github.io/assets/files/Arthur_Santos_Resume.pdf
+
+## Experience
+
+- **Software Engineer, Moises** (2022 – present, remote)
+  - Built a microservices social media observability pipeline with Python, Terraform, Cloud Run, Pub/Sub and BigQuery, giving real-time metrics across social platforms.
+  - Implemented CRM and automations (Salesforce, Apex, Google Apps Script, Google Cloud, Python) that improved the influencer-marketing team's efficiency by over 60%.
+  - Created the GCP structure hosting Python services triggered from a Flask front-end, with continuous deployment via GitHub Actions.
+  - Built a lead-scoring machine learning model (Python, PyTorch, web/social scraping) that helped close 200+ contracts in one quarter; maintains a 10K+ lead database.
+- **Software Engineer Intern, Moises** (2021 – 2022, remote)
+  - Hired after winning 1st place in a chord-recognition challenge; the algorithm (Python, ML, music identification, React front-end) reached production in an app with 50M+ users.
+- **PIBITI Researcher, UFPE** (2017 – 2022) — research and papers on software requirements engineering for startups and IoT.
+- **Junior Backend Engineer, Accenture** (2017 – 2018) — Bash/Unix automations for daily health checks; legacy Java review and documentation.
+- **Summer Job Intern, CESAR** (2017) — Android + OpenCV real-time guided city tour for EPSON Moverio AR glasses, built in six weeks.
+
+## Skills
+
+Python, TypeScript, JavaScript, SQL, Terraform, Google Cloud Platform (Cloud Run, Pub/Sub), BigQuery, PostgreSQL, Docker, CI/CD, GitHub Actions, DevOps, FastAPI, Flask, RESTful APIs, integrations, Salesforce/Apex, Google Apps Script, machine learning, PyTorch, data science and analysis, web scraping, AI integration, prompt engineering, automation engineering.
+
+Languages: Portuguese (native), English (fluent), Spanish (elementary), Italian (elementary).
+
+## Projects
+
+- [Ranking Político](https://arthurwkm.github.io/ranking-politico/): ranks Brazil's 594 senators and federal deputies from official open data (attendance, votes, laws, committee work, expenses) and maps them politically from roll-call votes. Python, JavaScript.
+- [Chord.ls](https://github.com/arthurwkm/chord.ls): winning Moises.ai challenge entry; chord recognition per timestamp from audio. Python, ML.
+- [EEG Mental State Classifier](https://github.com/arthurwkm/mental-state-classifier): EEG-based mental state classification for brain-computer interfaces, 98.86% eye-state accuracy. Python, scikit-learn, Django.
+- [E-Turismo](https://github.com/arthurwkm/e-turismo): AR guided tour of Recife for EPSON Moverio glasses. Java, Android, OpenCV.
+- [AR Library](https://github.com/arthurwkm/ar-livraria): Android AR prototype recognizing book covers. Java, ARToolkit.
+- [All projects](https://arthurwkm.github.io/projects/)

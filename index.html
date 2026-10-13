@@ -1,658 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arthur Santos - Personal Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arthur Santos — Software Engineer (Python, GCP, Data & AI)</title>
+  <meta name="description" content="Arthur Santos is a software engineer in Recife, Brazil, building data pipelines, automations, machine learning models and AI integrations with Python, TypeScript, Terraform and Google Cloud. 4+ years at Moises.">
+  <meta name="author" content="Arthur Santos Vieira Silva">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="canonical" href="https://arthurwkm.github.io/">
+  <link rel="icon" href="./assets/images/icon.png" type="image/png">
+  <link rel="alternate" type="text/markdown" href="/llms.txt" title="Plain-text profile for AI assistants">
 
-  <!--
-    - favicon
-  -->
-  <link rel="shortcut icon" href="./assets/images/icon.png" type="image/x-icon">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Arthur Santos — Software Engineer">
+  <meta property="og:description" content="Data pipelines, automations, ML models and AI integrations with Python and Google Cloud.">
+  <meta property="og:url" content="https://arthurwkm.github.io/">
+  <meta property="og:image" content="https://arthurwkm.github.io/assets/images/portfolio.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <!--
-    - custom css link
-  -->
-  <link rel="stylesheet" href="./assets/css/style.css">
-
-  <!--
-    - google font link
-  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/site.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Arthur Santos Vieira Silva",
+    "alternateName": "Arthur Santos",
+    "jobTitle": "Software Engineer",
+    "url": "https://arthurwkm.github.io/",
+    "image": "https://arthurwkm.github.io/assets/images/my-avatar.jpg",
+    "email": "mailto:arthurvieirasofteng@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Recife", "addressRegion": "PE", "addressCountry": "BR" },
+    "worksFor": { "@type": "Organization", "name": "Moises", "url": "https://moises.ai" },
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "Federal University of Pernambuco (UFPE)", "url": "https://www.ufpe.br" },
+    "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": "degree", "name": "BS in Computer Science" },
+    "knowsLanguage": ["Portuguese", "English", "Spanish", "Italian"],
+    "knowsAbout": ["Python", "TypeScript", "JavaScript", "Terraform", "Google Cloud Platform", "Cloud Run", "Pub/Sub", "BigQuery",
+      "PostgreSQL", "Docker", "CI/CD", "GitHub Actions", "DevOps", "FastAPI", "Flask", "REST APIs", "Salesforce", "Apex",
+      "Google Apps Script", "Machine Learning", "PyTorch", "Data Science", "Web Scraping", "AI Integration", "Prompt Engineering",
+      "Automation Engineering", "Microservices", "Computer Vision", "OpenCV", "Augmented Reality", "Brain-Computer Interfaces"],
+    "sameAs": ["https://github.com/arthurwkm", "https://www.linkedin.com/in/arthursantosvs/"]
+  }
+  </script>
 </head>
 
 <body>
+  <div class="spotlight" aria-hidden="true"></div>
+  <a class="skip" href="#content">Skip to content</a>
 
-  <!--
-    - #MAIN
-  -->
+  <div class="wrap">
+    <header class="side">
+      <div>
+        <h1><a href="/">Arthur Santos</a></h1>
+        <h2 class="role">Software Engineer</h2>
+        <p class="tagline">I turn messy data and repetitive work into pipelines, automations and models that run themselves.</p>
 
-  <main>
-
-    <!--
-      - #SIDEBAR
-    -->
-
-    <aside class="sidebar" data-sidebar>
-
-      <div class="sidebar-info">
-
-        <figure>
-          <img src="./assets/images/my-avatar.jpg" width="80" alt="Arthur Santos">
-        </figure>
-
-        <div class="info-content">
-          <h1 class="name" title="Arthur Santos">Arthur Santos</h1>
-
-          <p class="title">Software Engineer</p>
-        </div>
-
-        <div class="sidebar-actions">
-          <a href="./assets/files/Arthur_Santos_Resume.pdf" class="download-btn" download target="_blank" rel="noopener" aria-label="Download resume">
-            <span>Download Resume</span>
-            <ion-icon name="download-outline"></ion-icon>
-          </a>
-
-          <button class="info_more-btn" data-sidebar-btn aria-label="Show contacts">
-            <span>Show Contacts</span>
-            <ion-icon name="chevron-down"></ion-icon>
-          </button>
-        </div>
+        <nav class="nav" aria-label="Sections">
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+          </ul>
+        </nav>
       </div>
 
-      <div class="sidebar-info_more">
+      <ul class="social" aria-label="Links">
+        <li><a href="https://github.com/arthurwkm" target="_blank" rel="noopener me" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a></li>
+        <li><a href="https://www.linkedin.com/in/arthursantosvs/" target="_blank" rel="noopener me" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a></li>
+        <li><a href="mailto:arthurvieirasofteng@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13Zm2 .9v11.6h16V6.4l-8 5.6-8-5.6Zm1.7-.4L12 10.4 18.3 6H5.7Z"/></svg></a></li>
+        <li><a href="./assets/files/Arthur_Santos_Resume.pdf" class="resume-link" target="_blank" rel="noopener">Résumé ↗</a></li>
+      </ul>
+    </header>
 
-        <div class="separator"></div>
+    <main id="content" class="content">
+      <section id="about" aria-label="About me">
+        <h2 class="sticky-title">About</h2>
+        <p>I'm a software engineer at <a href="https://moises.ai" target="_blank" rel="noopener">Moises</a>, where I build
+          the systems behind growth and marketing: a real-time social media observability pipeline on Google Cloud, CRM
+          automations that made the influencer team <strong>60% more efficient</strong>, and a lead-scoring model that helped
+          close <strong>200+ contracts</strong> in a quarter.</p>
+        <p>I joined Moises by winning their chord-recognition challenge; that algorithm went on to ship in an app with
+          <strong>50M+ users</strong>. I hold a BS in Computer Science from UFPE, and outside work I like data journalism,
+          augmented reality and brain-computer interfaces.</p>
+      </section>
 
-        <ul class="contacts-list">
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="mail-outline"></ion-icon>
+      <section id="experience" aria-label="Work experience">
+        <h2 class="sticky-title">Experience</h2>
+        <ol class="cards">
+          <li class="card">
+            <p class="when">2022 — Present</p>
+            <div>
+              <h3>Software Engineer · <a href="https://moises.ai" target="_blank" rel="noopener">Moises</a></h3>
+              <ul class="bullets">
+                <li>Built a microservices social media observability pipeline (Python, Terraform, Cloud Run, Pub/Sub, BigQuery) with real-time metrics across platforms.</li>
+                <li>Implemented CRM and automations (Salesforce, Apex, Apps Script, Python) that raised influencer-marketing efficiency by 60%+.</li>
+                <li>Created a lead-scoring ML model (PyTorch, scraping) behind 200+ closed contracts in one quarter; maintain a 10K+ lead database.</li>
+                <li>Set up GCP hosting and GitHub Actions continuous deployment for Flask-triggered CRM services.</li>
+              </ul>
+              <ul class="tags"><li>Python</li><li>Terraform</li><li>GCP</li><li>BigQuery</li><li>Salesforce</li><li>PyTorch</li><li>CI/CD</li></ul>
             </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Email</p>
-
-              <a href="mailto:arthurvieirasofteng@gmail.com" class="contact-link">arthurvieirasofteng@gmail.com</a>
-            </div>
-
           </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="phone-portrait-outline"></ion-icon>
+          <li class="card">
+            <p class="when">2021 — 2022</p>
+            <div>
+              <h3>Software Engineer Intern · <a href="https://moises.ai" target="_blank" rel="noopener">Moises</a></h3>
+              <p>Hired after placing 1st in a chord-recognition challenge. Kept improving the algorithm (Python, ML, music
+                identification, React front-end) until it reached production in an app with 50M+ users.</p>
+              <ul class="tags"><li>Python</li><li>Machine Learning</li><li>React</li><li>Web Scraping</li></ul>
             </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Phone</p>
-
-              <a href="tel:+5581983615037" class="contact-link">+55 (81) 9 8361-5037</a>
-            </div>
-
           </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="calendar-outline"></ion-icon>
+          <li class="card">
+            <p class="when">2017 — 2022</p>
+            <div>
+              <h3>PIBITI Researcher · <a href="https://www.ufpe.br" target="_blank" rel="noopener">UFPE</a></h3>
+              <p>Researched and published on software requirements engineering for startups and IoT projects.</p>
+              <ul class="tags"><li>Requirements Engineering</li><li>Research</li></ul>
             </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Birthday</p>
-
-              <time datetime="1996-12-30">December 30, 1996</time>
-            </div>
-
           </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="location-outline"></ion-icon>
+          <li class="card">
+            <p class="when">2017 — 2018</p>
+            <div>
+              <h3>Junior Backend Engineer · Accenture</h3>
+              <p>Built Bash automations for daily health checks of client projects; reviewed and documented legacy Java code.</p>
+              <ul class="tags"><li>Bash</li><li>Unix</li><li>Java</li></ul>
             </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Location</p>
-
-              <address>Recife, Pernambuco, Brazil</address>
-            </div>
-
           </li>
+          <li class="card">
+            <p class="when">Jan — Feb 2017</p>
+            <div>
+              <h3>Summer Job Intern · CESAR</h3>
+              <p>In six weeks, learned Android and shipped a real-time guided city tour for EPSON's Moverio AR glasses using OpenCV image recognition and GPS.</p>
+              <ul class="tags"><li>Java</li><li>Android</li><li>OpenCV</li></ul>
+            </div>
+          </li>
+        </ol>
+        <p class="more"><a href="./assets/files/Arthur_Santos_Resume.pdf" target="_blank" rel="noopener">View full résumé <span aria-hidden="true">→</span></a></p>
+      </section>
 
+      <section id="projects" aria-label="Selected projects">
+        <h2 class="sticky-title">Projects</h2>
+        <ul class="cards">
+          <li class="card project">
+            <img src="./assets/images/ranking-politico.jpg" alt="Ranking Político dashboard" width="800" height="600" loading="lazy">
+            <div>
+              <h3><a href="./ranking-politico/">Ranking Político <span aria-hidden="true">↗</span></a></h3>
+              <p>Ranks Brazil's 594 senators and federal deputies using only official open data: attendance, votes, laws,
+                committee work and expenses. Places each one on a 2D political map built from how they actually vote.</p>
+              <ul class="tags"><li>Python</li><li>Open Data</li><li>Data Viz</li><li>JavaScript</li></ul>
+            </div>
+          </li>
+          <li class="card project">
+            <img src="./assets/images/chord-ls.jpg" alt="Chord.ls chord recognition" width="800" height="600" loading="lazy">
+            <div>
+              <h3><a href="https://github.com/arthurwkm/chord.ls" target="_blank" rel="noopener">Chord.ls <span aria-hidden="true">↗</span></a></h3>
+              <p>Winning entry of the Moises.ai challenge: detects the chords at every timestamp of an audio file. Later
+                adapted into production for 50M+ users.</p>
+              <ul class="tags"><li>Python</li><li>Machine Learning</li><li>Audio</li></ul>
+            </div>
+          </li>
+          <li class="card project">
+            <img src="./assets/images/eeg-classifier.jpg" alt="EEG signal classifier" width="800" height="600" loading="lazy">
+            <div>
+              <h3><a href="https://github.com/arthurwkm/mental-state-classifier" target="_blank" rel="noopener">EEG Mental State Classifier <span aria-hidden="true">↗</span></a></h3>
+              <p>Classifies mental states from EEG signals for brain-computer interfaces, with 98.86% accuracy on eye-state
+                detection and an interactive dashboard.</p>
+              <ul class="tags"><li>Python</li><li>scikit-learn</li><li>Django</li><li>BCI</li></ul>
+            </div>
+          </li>
+          <li class="card project">
+            <img src="./assets/images/e-turismo.jpg" alt="E-Turismo AR glasses tour" width="800" height="600" loading="lazy">
+            <div>
+              <h3><a href="https://github.com/arthurwkm/e-turismo" target="_blank" rel="noopener">E-Turismo <span aria-hidden="true">↗</span></a></h3>
+              <p>Guided tour of Recife for EPSON Moverio AR glasses: recognizes landmarks through the glasses' camera and
+                tells their history.</p>
+              <ul class="tags"><li>Java</li><li>Android</li><li>ARToolkit</li><li>OpenCV</li></ul>
+            </div>
+          </li>
+          <li class="card project">
+            <img src="./assets/images/ar-library.jpg" alt="AR Library book recognition" width="800" height="600" loading="lazy">
+            <div>
+              <h3><a href="https://github.com/arthurwkm/ar-livraria" target="_blank" rel="noopener">AR Library <span aria-hidden="true">↗</span></a></h3>
+              <p>Android prototype that recognizes book covers in augmented reality and overlays information about the book.</p>
+              <ul class="tags"><li>Java</li><li>Android</li><li>ARToolkit</li></ul>
+            </div>
+          </li>
         </ul>
+        <p class="more"><a href="./projects/">View full project archive <span aria-hidden="true">→</span></a></p>
+      </section>
 
-        <div class="separator"></div>
-
-        <ul class="social-list">
-
-          <li class="social-item">
-            <a href="https://www.linkedin.com/in/arthursantosvs/" class="social-link" target="_blank" rel="noopener" aria-label="Linkedin">
-              <ion-icon name="logo-linkedin"></ion-icon>
-            </a>
-          </li>
-
-          <li class="social-item">
-            <a href="https://github.com/arthurwkm" class="social-link" target="_blank" rel="noopener" aria-label="Github">
-              <ion-icon name="logo-github"></ion-icon>
-            </a>
-          </li>
-
-          <li class="social-item">
-            <a href="https://www.instagram.com/arthursantosvs/" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
-              <ion-icon name="logo-instagram"></ion-icon>
-            </a>
-          </li>
-
+      <section id="skills" aria-label="Skills" class="skills">
+        <h2 class="sticky-title">Skills</h2>
+        <ul class="tags tags-lg">
+          <li>Python</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li><li>Terraform</li><li>Google Cloud (Cloud Run, Pub/Sub)</li>
+          <li>BigQuery</li><li>PostgreSQL</li><li>Docker</li><li>CI/CD · GitHub Actions</li><li>FastAPI</li><li>Flask</li>
+          <li>REST APIs</li><li>Salesforce / Apex</li><li>Google Apps Script</li><li>Machine Learning · PyTorch</li>
+          <li>Data Analysis</li><li>Web Scraping</li><li>AI Integration</li><li>Prompt Engineering</li><li>Automation Engineering</li>
         </ul>
-
-      </div>
-
-    </aside>
-
-
-
-
-
-    <!--
-      - #main-content
-    -->
-
-    <div class="main-content">
-
-      <!--
-        - #NAVBAR
-      -->
-
-      <nav class="navbar">
-
-        <ul class="navbar-list">
-
-          <li class="navbar-item">
-            <button class="navbar-link  active" data-nav-link>About</button>
-          </li>
-
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Portfolio</button>
-          </li>
-
-        </ul>
-
-      </nav>
-
-
-      <!--
-        - #ABOUT
-      -->
-
-      <article class="about  active" data-page="about">
-
-        <header>
-          <h2 class="h2 article-title">About me</h2>
-        </header>
-
-        <section class="about-text">
-          <p>
-            Hello, I'm Arthur Santos, a dedicated professional with a profound passion for creative problem-solving
-            through the
-            application of cutting-edge computing techniques. I hold a degree in Computer Science from the
-            Federal
-            University of Pernambuco, and my journey in the world of technology has been nothing short of exhilarating
-            for me.
-            My
-            pursuit of knowledge has led me to explore a diverse array of fields, including VR/AR, computational vision,
-            musical
-            computing,
-            data science, machine learning, and various software languages and frameworks, with a strong emphasis on
-            Python-based
-            technologies and a special passion for Brain-Computer Interfaces.
-
-          </p>
-
-          <p>
-            Throughout my career, I've had the privilege of contributing my expertise to a multitude of projects, both
-            professionally
-            and personally. Most notably, my recent endeavors have centered on refining musitech algorithms to
-            find different song sections and enhancing marketing efficiency through a combination of data analysis, web
-            scraping, machine
-            learning, and the automation of time-consuming tasks. I'm excited to share my experiences, skills, and
-            innovative
-            solutions with you, and I look forward to the opportunity to collaborate on future endeavors that push the
-            boundaries of
-            what technology can achieve
-          </p>
-        </section>
-
-
-        <!--
-          - service
-        -->
-
-        <section class="service">
-
-          <h3 class="h3 service-title">Career Pillars</h3>
-
-          <ul class="service-list">
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-data.png" width="40" alt="">
-              </div>
-
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Data Science and Machine Learning</h4>
-
-                <p class="service-item-text">
-                  I have worked with machine learning models for AdTech and MusiTech, and I'm able to comfortably plan
-                  and start development on new models to tackle problems within these areas.
-                </p>
-              </div>
-
-            </li>
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-mkt.png" width="40" alt="">
-              </div>
-
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">AdTech Development and Automations</h4>
-
-                <p class="service-item-text">
-                  I have worked with multiple tools to automate and develop smart ways to increase marketing
-                  performance.
-                </p>
-              </div>
-
-            </li>
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-research.png" width="40" alt="">
-              </div>
-
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Academic Research</h4>
-
-                <p class="service-item-text">
-                  I have worked with Scientific Research for Requirements Engineering and Musical Computing. I'm able to
-                  quickly read new papers, as well as use new scientific knowledge within my development.
-                </p>
-              </div>
-
-            </li>
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-software.png" width="40" alt="">
-              </div>
-
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Software Engineering</h4>
-
-                <p class="service-item-text">
-                  I have worked with many stacks, languages and frameworks, as well as written code for diverse
-                  platforms and custom APIs.
-                </p>
-              </div>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-        <section class="skill">
-          <h3 class="h3 skills-title">My skills</h3>
-          <div class="skills-list content-card">
-            <div class="skill-group">
-              <h4 class="h4 skill-group-title">Languages</h4>
-              <ul class="skill-card-body">
-                <li class="skill-card skill-card-title">Python</li>
-                <li class="skill-card skill-card-title">TypeScript</li>
-                <li class="skill-card skill-card-title">JavaScript</li>
-                <li class="skill-card skill-card-title">Java</li>
-                <li class="skill-card skill-card-title">R</li>
-                <li class="skill-card skill-card-title">SQL</li>
-              </ul>
-            </div>
-            <div class="skill-group">
-              <h4 class="h4 skill-group-title">Cloud & DevOps</h4>
-              <ul class="skill-card-body">
-                <li class="skill-card skill-card-title">Google Cloud Platform</li>
-                <li class="skill-card skill-card-title">Terraform</li>
-                <li class="skill-card skill-card-title">Docker</li>
-                <li class="skill-card skill-card-title">CI/CD</li>
-                <li class="skill-card skill-card-title">DevOps</li>
-                <li class="skill-card skill-card-title">GitHub Actions</li>
-                <li class="skill-card skill-card-title">Git</li>
-              </ul>
-            </div>
-            <div class="skill-group">
-              <h4 class="h4 skill-group-title">Data & AI</h4>
-              <ul class="skill-card-body">
-                <li class="skill-card skill-card-title">Data Science / Analysis</li>
-                <li class="skill-card skill-card-title">Machine Learning</li>
-                <li class="skill-card skill-card-title">PyTorch</li>
-                <li class="skill-card skill-card-title">AI Integration</li>
-                <li class="skill-card skill-card-title">Prompt Engineering</li>
-                <li class="skill-card skill-card-title">BigQuery</li>
-                <li class="skill-card skill-card-title">PostgreSQL</li>
-                <li class="skill-card skill-card-title">OpenCV</li>
-              </ul>
-            </div>
-            <div class="skill-group">
-              <h4 class="h4 skill-group-title">Backend & Automation</h4>
-              <ul class="skill-card-body">
-                <li class="skill-card skill-card-title">FastAPI</li>
-                <li class="skill-card skill-card-title">Flask</li>
-                <li class="skill-card skill-card-title">RESTful APIs</li>
-                <li class="skill-card skill-card-title">Node.js</li>
-                <li class="skill-card skill-card-title">Integrations</li>
-                <li class="skill-card skill-card-title">Web Scraping</li>
-                <li class="skill-card skill-card-title">Automation Engineering</li>
-                <li class="skill-card skill-card-title">Salesforce / Apex</li>
-                <li class="skill-card skill-card-title">Google Apps Script</li>
-              </ul>
-            </div>
-            <div class="skill-group">
-              <h4 class="h4 skill-group-title">Other</h4>
-              <ul class="skill-card-body">
-                <li class="skill-card skill-card-title">React.js</li>
-                <li class="skill-card skill-card-title">Unity</li>
-                <li class="skill-card skill-card-title">Requirements Engineering</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-
-
-
-      </article>
-
-
-
-      <!--
-        - #PORTFOLIO
-      -->
-
-      <article class="portfolio" data-page="portfolio">
-
-        <header>
-          <h2 class="h2 article-title">Portfolio</h2>
-        </header>
-
-        <section class="projects">
-
-          <ul class="filter-list">
-            <li class="filter-item">
-              <button class="active" data-filter-btn>All</button>
-            </li>
-            <li class="filter-item">
-              <button data-filter-btn>Data Science</button>
-            </li>
-            <li class="filter-item">
-              <button data-filter-btn>Web Development</button>
-            </li>
-            <li class="filter-item">
-              <button data-filter-btn>Musical Computing</button>
-            </li>
-            <li class="filter-item">
-              <button data-filter-btn>Computer Vision</button>
-            </li>
-            <li class="filter-item">
-              <button data-filter-btn>Applications</button>
-            </li>
-            <li class="filter-item">
-              <button data-filter-btn>BCI</button>
-            </li>
-            <li class="filter-item">
-              <button data-filter-btn>Others</button>
-            </li>
-          </ul>
-
-          <div class="filter-select-box">
-
-            <button class="filter-select" data-select>
-
-              <div class="select-value" data-select-value>Select category</div>
-
-              <div class="select-icon">
-                <ion-icon name="chevron-down"></ion-icon>
-              </div>
-
-            </button>
-
-            <ul class="select-list">
-              <li class="select-item">
-                <button data-select-item>All</button>
-              </li>
-              <li class="select-item">
-                <button data-select-item>Data Science</button>
-              </li>
-              <li class="select-item">
-                <button data-select-item>Web Development</button>
-              </li>
-              <li class="select-item">
-                <button data-select-item>Musical Computing</button>
-              </li>
-              <li class="select-item">
-                <button data-select-item>Computer Vision</button>
-              </li>
-              <li class="select-item">
-                <button data-select-item>Applications</button>
-              </li>
-              <li class="select-item">
-                <button data-select-item>BCI</button>
-              </li>
-              <li class="select-item">
-                <button data-select-item>Others</button>
-              </li>
-            </ul>
-
-          </div>
-
-          <ul class="project-list">
-
-            <li class="project-item active" data-filter-item data-category="data science">
-              <a href="./ranking-politico/">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/ranking-politico.jpg" alt="Ranking Político" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Ranking Político (Finished)</h3>
-
-                <p class="project-text">Ranking of Brazil's senators and federal deputies built only from official open data: attendance, roll-call votes, committee work, laws passed and expenses. Also places each politician on a 2D political map derived from how they actually vote. Click to open the live site.</p>
-
-              </a>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="bci">
-              <a href="https://github.com/arthurwkm/mental-state-classifier" target="_blank" rel="noopener">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="logo-github"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/eeg-classifier.jpg" alt="EEG Mental State Classifier" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">EEG Mental State Classifier (Finished)</h3>
-
-                <p class="project-text">Machine learning system for classifying mental states from EEG signals, built with Python, Django, Random Forest and an interactive web dashboard. Reaches 98.86% accuracy in eye state detection for brain-computer interface applications.</p>
-
-              </a>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="musical computing">
-              <a href="https://github.com/arthurwkm/chord.ls" target="_blank" rel="noopener">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="logo-github"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/chord-ls.jpg" alt="Chord.ls" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Chord.ls (Finished)</h3>
-
-                <p class="project-text">Project made for the Moises.ai Challenge. Given an audio file containing chord data (songs, instrument recordings, etc.) in ".mp3", ".wav", ".ogg" or ".mid" format, generates a document detailing the chords at each timestamp.</p>
-
-              </a>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="computer vision">
-              <a href="https://github.com/arthurwkm/ar-livraria" target="_blank" rel="noopener">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="logo-github"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/ar-library.jpg" alt="AR Library" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">AR Library (Finished)</h3>
-
-                <p class="project-text">Android app prototype that recognizes book covers and shows data about the book, using the ARToolkit library.</p>
-
-              </a>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="computer vision">
-              <a href="https://github.com/arthurwkm/e-turismo" target="_blank" rel="noopener">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="logo-github"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/e-turismo.jpg" alt="E-Turismo" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">E-Turismo (Finished)</h3>
-
-                <p class="project-text">Made for the EPSON Moverio AR glasses during the CESAR Summer Job. Uses ARToolkit to recognize key touristic points in Recife and gives a guided, historical tour of the city's streets using only the AR glasses.</p>
-
-              </a>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="applications">
-              <a href="https://github.com/arthurwkm/AmiProject" target="_blank" rel="noopener">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="logo-github"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/amiproject.jpg" alt="AmiProject" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">AmiProject (Finished)</h3>
-
-                <p class="project-text">Made for IBM's Hackatruck using Swift. An app that accompanies a toy designed to be a friend/babysitter for small children.</p>
-
-              </a>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="others">
-              <a href="https://github.com/arthurwkm/NurseManager" target="_blank" rel="noopener">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="logo-github"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/nurse-manager.jpg" alt="Nurse-Manager" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Nurse-Manager (Finished)</h3>
-
-                <p class="project-text">Made for the Software Engineering course to learn system development, requirements engineering and unit testing. The project centers on a nurse management system.</p>
-
-              </a>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="web development">
-              <a href="https://github.com/arthurwkm/concentration-dilution-calculator" target="_blank" rel="noopener">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="logo-github"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/concentration-calculator.jpg" alt="Concentration/Dilution Calculator" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Concentration/Dilution Calculator (Finished)</h3>
-
-                <p class="project-text">Simple web page to calculate concentration/dilution.</p>
-
-              </a>
-            </li>
-
-            <li class="project-item active" data-filter-item data-category="web development">
-              <a href="https://github.com/arthurwkm/arthurwkm.github.io" target="_blank" rel="noopener">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="logo-github"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/portfolio.jpg" alt="My Portfolio" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">My Portfolio (Finished)</h3>
-
-                <p class="project-text">This portfolio website, made using HTML, CSS and JS.</p>
-
-              </a>
-            </li>
-
-          </ul>
-
-        </section>
-
-      </article>
-
-    </div>
-
-  </main>
-
-
-
-
-
-
-  <!--
-    - custom js link
-  -->
-  <script src="./assets/js/script.js"></script>
-
-  <!--
-    - ionicon link
-  -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+        <p class="langs">Portuguese (native) · English (fluent) · Spanish, Italian (elementary)</p>
+      </section>
+
+      <footer class="foot">
+        <p>Hand-coded in plain HTML and CSS, no framework. Deployed with GitHub Pages. A plain-text version for AI assistants is at <a href="/llms.txt">/llms.txt</a>.</p>
+      </footer>
+    </main>
+  </div>
+
+  <script src="./assets/js/site.js" defer></script>
 </body>
-
 </html>
