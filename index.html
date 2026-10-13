@@ -215,10 +215,13 @@
 
   <script src="./assets/js/site.js" defer></script>
   <script type="module">
-    // background mini-game: basketball or bowman, picked at random on each visit (?game=ball|bowman forces one)
-    const forced = new URLSearchParams(location.search).get('game');
-    const game = ['ball', 'bowman'].includes(forced) ? forced : Math.random() < 0.5 ? 'ball' : 'bowman';
-    import(`./assets/js/${game}.js`);
+    // background mini-game: basketball or bowman, picked at random on each visit (?game=ball|bowman forces one).
+    // Skipped on touch screens and small viewports, where the games don't play well.
+    if (!matchMedia('(pointer: coarse), (max-width: 767px)').matches) {
+      const forced = new URLSearchParams(location.search).get('game');
+      const game = ['ball', 'bowman'].includes(forced) ? forced : Math.random() < 0.5 ? 'ball' : 'bowman';
+      import(`./assets/js/${game}.js`);
+    }
   </script>
 </body>
 </html>
