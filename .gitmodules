@@ -1,0 +1,3 @@
+[submodule "ranking-politico"]
+	path = ranking-politico
+	url = https://github.com/arthurwkm/ranking-politico
