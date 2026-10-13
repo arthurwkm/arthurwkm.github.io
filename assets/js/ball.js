@@ -22,6 +22,63 @@ const ball = { x: 0, y: 0, vx: 0, vy: 0, a: 0, w: 0 };
 let drag = null, samples = [], running = false, last = 0;
 const pops = [];                      // "+1" labels
 
+// net: a grid of verlet nodes hanging from the rim, drawn as diagonals (a diamond mesh). Each node is pulled
+// back to its rest spot by a soft spring, so the net keeps its tapered shape without having to model 3D.
+const NET_ROWS = 4, NET_COLS = 6;
+const NET_SPRING = 0.015, NET_DAMP = 0.95;
+let net = [], links = [], netAwake = false;
+
+function buildNet() {
+  const { front: f, back: b, rimY, depth } = hoop, inset = (b - f) * 0.2;
+  net = [];
+  for (let r = 0; r <= NET_ROWS; r++) for (let i = 0; i <= NET_COLS; i++) {
+    const w = (b - f) - 2 * inset * r / NET_ROWS;
+    const x = f + inset * r / NET_ROWS + w * i / NET_COLS, y = rimY + 2 * P + (depth - 2 * P) * r / NET_ROWS;
+    net.push({ x, y, px: x, py: y, rx: x, ry: y, r, side: i === 0 || i === NET_COLS });
+  }
+  const at = (r, i) => net[r * (NET_COLS + 1) + i];
+  links = [];
+  for (let r = 0; r < NET_ROWS; r++) for (let i = 0; i <= NET_COLS; i++) for (const j of [i - 1, i + 1]) {
+    if (j < 0 || j > NET_COLS) continue;
+    const a = at(r, i), c = at(r + 1, j);
+    links.push([a, c, Math.hypot(a.x - c.x, a.y - c.y)]);
+  }
+  for (let i = 0; i < NET_COLS; i++) {
+    const a = at(NET_ROWS, i), c = at(NET_ROWS, i + 1);
+    links.push([a, c, Math.hypot(a.x - c.x, a.y - c.y), true]);                 // bottom ring, drawn brighter
+  }
+}
+
+function stepNet(dt) {
+  let moving = false;
+  for (const n of net) {
+    if (n.r === 0) continue;                                                     // top row is tied to the rim
+    const vx = (n.x - n.px) * NET_DAMP, vy = (n.y - n.py) * NET_DAMP;
+    n.px = n.x; n.py = n.y;
+    n.x += vx + (n.rx - n.x) * NET_SPRING; n.y += vy + (n.ry - n.y) * NET_SPRING;
+    const dx = n.x - ball.x, dy = n.y - ball.y, d = Math.hypot(dx, dy);
+    if (d < R && d > 0) {
+      if (n.side) {
+        // the side strands wrap around the ball: push them out and take a little speed off the ball
+        const nx = dx / d, ny = dy / d, vn = ball.vx * nx + ball.vy * ny;
+        n.x = ball.x + nx * R; n.y = ball.y + ny * R;
+        if (vn > 0) { ball.vx -= 0.2 * vn * nx; ball.vy -= 0.2 * vn * ny; }
+      } else {
+        // strands in front of/behind the ball get dragged along with it (the swish)
+        n.x += ball.vx * dt * 0.9; n.y += ball.vy * dt * 0.9;
+        ball.vx *= 1 - 0.4 * dt; ball.vy *= 1 - 0.4 * dt;
+      }
+    }
+    if (Math.abs(vx) + Math.abs(vy) > 0.02 || Math.abs(n.x - n.rx) + Math.abs(n.y - n.ry) > 0.5) moving = true;
+  }
+  for (let k = 0; k < 2; k++) for (const [a, c, len] of links) {
+    const dx = c.x - a.x, dy = c.y - a.y, d = Math.hypot(dx, dy) || 1, f = (d - len) / d * 0.5;
+    if (a.r) { a.x += dx * f; a.y += dy * f; }
+    if (c.r) { c.x -= dx * f; c.y -= dy * f; }
+  }
+  netAwake = moving;
+}
+
 function layout() {
   g.resize();
   W = g.W; H = g.H;
@@ -33,6 +90,7 @@ function layout() {
     boardX, boardW: 3 * P, boardTop: rimY - 0.9 * m, boardBottom: rimY + 0.15 * m,
     rimY, front: boardX - 0.15 * m - rimW, back: boardX - 0.15 * m, depth: 0.45 * m,
   };
+  buildNet();
   // starts in the empty gap between the two columns on desktop, mid-screen on phones
   ball.x = Math.min(Math.max(ball.x || W * (W >= 1024 ? 0.42 : 0.5), R), W - R);
   ball.y = Math.min(ball.y || H - R, H - R);
@@ -94,6 +152,7 @@ function step(dt) {
     }
   }
   ball.a += ball.w * dt;
+  stepNet(dt);
 }
 
 // ---------- drawing (art pixels) ----------
@@ -118,7 +177,7 @@ function draw() {
   g.clear();
   const q = v => Math.round(v / P);
   const bx = q(hoop.boardX), bw = q(hoop.boardW), bt = q(hoop.boardTop), bb = q(hoop.boardBottom);
-  const ry = q(hoop.rimY), f = q(hoop.front), b = q(hoop.back), dep = q(hoop.depth);
+  const ry = q(hoop.rimY), f = q(hoop.front), b = q(hoop.back);
   const right = g.cols - 1, floor = Math.floor((H - 1) / P);
 
   // pole: 3 px wide with a lit edge, a base plate on the floor and two struts holding the board
@@ -132,18 +191,8 @@ function draw() {
   g.rect(bx, bt, bw, bb - bt, WHITE);
   g.rect(bx + 1, bt + 2, Math.max(bw - 2, 1), bb - bt - 4, alpha(0.4));
 
-  // net: staggered diamond mesh that narrows towards the bottom
-  const rows = 4, cols = 6, inset = (b - f) * 0.2;
-  const pt = (r, u) => {
-    const l = f + inset * r / rows, w = (b - f) - 2 * inset * r / rows;
-    return [l + w * Math.min(Math.max(u, 0), 1), ry + 2 + (dep - 2) * r / rows];
-  };
-  for (let r = 0; r < rows; r++) for (let i = 0; i <= cols; i++) {
-    const u = (i + (r % 2) * 0.5) / cols;
-    g.line(...pt(r, u), ...pt(r + 1, u + 0.5 / cols), alpha(0.3));
-    g.line(...pt(r, u), ...pt(r + 1, u - 0.5 / cols), alpha(0.3));
-  }
-  g.line(...pt(rows, 0), ...pt(rows, 1), alpha(0.45));
+  // net: diagonals between the simulated nodes form the diamond mesh
+  for (const [a, c, , ring] of links) g.line(a.x / P, a.y / P, c.x / P, c.y / P, alpha(ring ? 0.45 : 0.3));
 
   // rim: a thin ellipse in perspective, the far half dim and the near half bright and 2 px thick
   const rx = (b - f) / 2, cx = f + rx;
@@ -168,10 +217,11 @@ function frame(now) {
   const dt = Math.min((now - last) / 1000, 1 / 30);
   last = now;
   if (!drag) for (let i = 0; i < 4; i++) step(dt / 4);
+  else for (let i = 0; i < 4; i++) stepNet(dt / 4);                          // a held ball can still push the net
   for (const p of pops) p.t += dt;
   while (pops.length && pops[0].t > 1.1) pops.shift();
   draw();
-  const resting = !drag && ball.vx === 0 && ball.vy === 0 && ball.y >= H - R && !pops.length;
+  const resting = !drag && ball.vx === 0 && ball.vy === 0 && ball.y >= H - R && !pops.length && !netAwake;
   if (resting) { running = false; return; }
   requestAnimationFrame(frame);
 }
